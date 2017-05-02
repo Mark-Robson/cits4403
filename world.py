@@ -3,8 +3,8 @@ import random
 
 class world:
 	foodmap = numpy.zeros((1,1))
-	totalfood = 0 
-	mapsize = 0 ;
+	totalfood = 0
+	mapsize = 0 
 
 	def __init__(self,mapsize):
 		if(mapsize < 1):
@@ -13,8 +13,9 @@ class world:
 		self.mapsize = mapsize
 
 	def addfood(self, amount):
-		self.foodmap[0][0] += amount
-		self.totalfood += amount
+		# print("we added "+str(amount)+" new food")
+		self.foodmap[0][0] = self.foodmap[0][0]+ amount
+		self.totalfood = self.totalfood  + amount
 
 	def getTotalFood(self):
 		return totalfood
@@ -29,11 +30,12 @@ class world:
 			raise ValueError('Mapsize was '+str(mapsize)+" position "+str(x)+" , "+str(y)+" is not valid")
 		temp =  self.foodmap[x][y]
 		self.foodmap[x][y] = 0
-		self.totalfood -= temp
+		self.totalfood = self.totalfood - temp
 		return temp
 
 	def getSize(self):
 		return self.mapsize
+
 		
 
 
