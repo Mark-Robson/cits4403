@@ -44,7 +44,7 @@ class Species:
 		self.child_rules = child_rules
 		self.death_rules = death_rules
 
-	def totalMass(self)
+	def totalMass(self):
 		total = 0
 		for i in self.members:
 			total = total + i.getMass()
@@ -62,7 +62,7 @@ class Species:
 		return self.eating_rules.hunger(self.members[i],self.min_size,self.speed)
 
 # retunrs the amout of food to add back into the system
-	def grow(self, i);
+	def grow(self, i):
 		return self.eating_rules.grow(self.members[i],self.grow_rate,self.max_size)
 
 # note that id 0 is grass

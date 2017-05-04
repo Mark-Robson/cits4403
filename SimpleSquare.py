@@ -34,4 +34,3 @@ class SimpleSquare(WorldMap):
 		self.foodmap[x][y] = self.foodmap[x][y] - amount
 		self.__total_food = self.__total_food - amount
 		return amount
-		

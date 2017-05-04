@@ -6,7 +6,7 @@ class WorldMap:
 	__mapsize
 
 
-	def __init__(self , FoodSystem , size)
+	def __init__(self , FoodSystem , size):
 	self.__food_system = FoodSystem
 	self.__total_food = 0
 	self.__mapsize = size
@@ -34,4 +34,5 @@ class WorldMap:
 
 	def getSize(self):
 		return self.mapsize
+		
 		

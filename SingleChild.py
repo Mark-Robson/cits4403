@@ -8,4 +8,3 @@ class SingleChild (ChildRules):
 			creature.size = creature.size-kid_size-kid_stomach_size
 			alist.append((creature.x,creature.y))
 		return alist
-		
