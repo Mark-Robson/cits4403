@@ -1,44 +1,31 @@
-from creature import *
-from herbivore import *
-from world import *
-from randomworld import *
-from simulation import *
-import numpy
-import random
+from Species import *
+from RandomMovement import *
+from DeathRules import *
+from CleanEater import *
+from SingleChild import *
+from SpeciesFactory import *
+from WorldMap import *
+from SpeciesFactory import *
+from SpeciesFactory import *
+from SimpleSquare import *
+from RandomFoodSystem import *
+
+alist = []
+alist.append(0)
+world_size = 1000
+starting_food = 2000000
+dermps = SpeciesFactory.simpleLargeHerb(10,world_size,1,alist)
+
+file = open("testfile.csv","w")
+
+worldmap = SimpleSquare(self, RandomFoodSystem(self,world_size,world_size))
+worldmap.addFood(starting_food)
+
+print ("the world contains "+str(worldmap.getTotalFood())+"food")
+print ("the creature have  "+str(dermps.totalMass())+"food")
+print ("the total food is  "+str(worldmap.getTotalFood()+dermps.totalMass())+"food")
+
+for i in range(10):
+	i = i+10
 
 
-simulations = simulation.newrandomworld(100,100,100000)
-# simulations.printsim()
-file = open("testfile.csv","w") 
-totalfoodstart = simulations.creaturefood()+simulations.simworld.totalfood
-
-print ("the world contains "+str(simulations.simworld.totalfood)+"food")
-print ("the creature have  "+str(simulations.creaturefood())+"food")
-print ("the total food is  "+str(simulations.creaturefood()+simulations.simworld.totalfood)+"food")
-for i in range(1000):
-	# simulations.printsim()
-	print(i)
-	file.write(simulations.stepsim()+"\n")
-	# print(len(simulations.creatures))
-
-simulations.simworld.addamountfood(int(10),100000)
-simulations.maxfood = simulations.maxfood +100000
-for i in range(1000):
-	# simulations.printsim()
-	print(i)
-	file.write(simulations.stepsim()+"\n")
-	# print(len(simulations.creatures))
-simulations.maxfood = simulations.maxfood -150000
-for i in range(1000):
-	# simulations.printsim()
-	print(i)
-	file.write(simulations.stepsim()+"\n")
-	# print(len(simulations.creatures))
-
-
-
-file.close() 
-print ("the world contains "+str(simulations.simworld.totalfood)+"food")
-print ("the creature have  "+str(simulations.creaturefood())+"food")
-print ("the total food is  "+str(simulations.creaturefood()+simulations.simworld.totalfood)+"food")
-# simulations.printsim()

@@ -32,12 +32,25 @@ class CleanEater(FoodRules):
 				temp =  creature.size
 				creature.size = 0
 				return(1,speed-amount_left+temp)
-
-# returns the amount of food used to grow
+	
 	def grow(self,creature,grow_rate,max_size):
 		if(creature.size < max_size):
-			if(creature.stomach >= 4*grow_rate):
-				creature.size = creature.size + grow_rate
-				creature.stomach = creature.stomach - 2*grow_rate
-				return grow_rate
+			if(creature.stomach+creature.size =< max_size):
+				creature.size = creature.size + creature.stomach
+				creature.stomach = 0
+				return 0
+			else:
+				old_size = creature.size
+				creature.size = max_size
+				creature.stomach = creature.stomach-(creature.size-old_size)
+				return 0
 		return 0
+
+# returns the amount of food used to grow
+	# def grow(self,creature,grow_rate,max_size):
+	# 	if(creature.size < max_size):
+	# 		if(creature.stomach >= 4*grow_rate):
+	# 			creature.size = creature.size + grow_rate
+	# 			creature.stomach = creature.stomach - 2*grow_rate
+	# 			return grow_rate
+	# 	return 0

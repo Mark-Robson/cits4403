@@ -9,7 +9,7 @@ class SimpleSquare(WorldMap):
 		if(mapsize < 1):
 			raise ValueError('Mapsize was '+ str(mapsize))
 		self.foodmap = numpy.zeros((mapsize,mapsize))
-		super().__init__(FoodSystem , mapsize)
+		super().__init__(FoodSystem , size)
 
 	def addfood(self, amount):
 		if(amount>__mapsize):

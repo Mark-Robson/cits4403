@@ -1,4 +1,4 @@
-from sets import Set
+# from sets import *
 from Creature import *
 class Species:
 	species_id
@@ -22,17 +22,10 @@ class Species:
 	child_rules
 	death_rules
 
-	def __init__(self,
-	movement_system,eating_rules,child_rules,death_rules
-	species_id,can_eat_list,
-	max_size,min_size,
-	max_stomach_size,grow_rate,
-	kid_size,kid_stomach_size,
-	speed):
-
+	def __init__(self,movement_system,eating_rules,child_rules,death_rules,species_id,can_eat_list,max_size,min_size,max_stomach_size,grow_rate,kid_size,kid_stomach_size,speed):
 		self.species_id = species_id
 		self.can_eat_list= Set(can_eat_list)
- 		self.max_size = max_size
+		self.max_size = max_size
 		self.min_size = min_size
 		self.max_stomach_size = max_stomach_size
 		self.kid_size = kid_size
@@ -84,13 +77,12 @@ class Species:
 					total = total+(self.death_rules.hunger(self.members[i]))
 					#this may not work right
 					del self.members[i]
-
 		return total
 # list of (x,y) locations to make a new member
 	def add_members(self,list):
 		self.births_laststep = len(list)
 		self.population = self.population + len(list)
-		for i in list
+		for i in list:
 			self.members.append(Creature(x,y,self.kid_size,self.max_food))
 
 #returns a list of x, y or kids if can not have a kid it is of size 0
