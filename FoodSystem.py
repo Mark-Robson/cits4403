@@ -1,6 +1,7 @@
-class foodsystem:
+class Foodsystem:
 
 	def __init__(self):
+		a=1
 
 	def addFood(self,amount):
 		a = []

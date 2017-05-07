@@ -1,35 +1,35 @@
 from FoodSystem import *
 
 class WorldMap:
-	__food_system
-	__total_food
-	__mapsize
+	food_system = Foodsystem()
+	total_food = 0
+	mapsize = 0 
 
 
 	def __init__(self , FoodSystem , size):
-	self.__food_system = FoodSystem
-	self.__total_food = 0
-	self.__mapsize = size
+		self.food_system = FoodSystem
+		self.total_food = 0
+		self.mapsize = size
 
 # asks the food system where to add the amount of food to the system
 # addes the food to that set of tiles
 	def addFood(self , amount):
-		self.__food_system.addFood(amount)
-		self.__total_food = self.__total_food + amount
+		self.food_system.addFood(amount)
+		self.total_food = self.total_food + amount
 
 	def getTotalFood(self):
-		return __total_food
+		return self.total_food
 # This will retunr the amount of food on tile at x,y
 	def getfood(self , x , y):
-		return self.__total_food
+		return self.total_food
 
 # This will try to remove amount food for tile at x, y returning the amount of 
 # food that was removed 
 	def removefood(self , x , y , amount):
-		if(amount>self.__total_food):
-			amount = self.__total_food
+		if(amount>self.total_food):
+			amount = self.total_food
 			return amount
-		self.__total_food = self.__total_food - amount
+		self.total_food = self.total_food - amount
 		return amount
 
 	def getSize(self):

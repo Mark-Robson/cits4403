@@ -1,10 +1,11 @@
-class Creature:
-	x
-	y
-	size
-	stomach
 
-	def __init__(self,x,y,self.kid_size,kid_stomach_size):
+class Creature:
+	x =0
+	y =0
+	size =0
+	stomach =0
+
+	def __init__(self,x,y,kid_size,kid_stomach_size):
 		self.x = x
 		self.y = y
 		self.size = kid_size

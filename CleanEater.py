@@ -1,8 +1,9 @@
-from FoodRules inport *
+from FoodRules import *
 
 class CleanEater(FoodRules):
 
 	def __init__(self):
+		a =0
 
 #returns (the amount of food to be left on the tile ,
  # the amount of food to be added back into the system later ) 
@@ -35,7 +36,7 @@ class CleanEater(FoodRules):
 	
 	def grow(self,creature,grow_rate,max_size):
 		if(creature.size < max_size):
-			if(creature.stomach+creature.size =< max_size):
+			if(creature.stomach+creature.size <= max_size):
 				creature.size = creature.size + creature.stomach
 				creature.stomach = 0
 				return 0

@@ -1,7 +1,7 @@
 
 class FoodRules:
 	def __init__(self):
-
+		a= 1
 #returns (the amount of food to be left on the tile ,
  # the amount of food to be added back into the system later ) 
 	def eat (self,creature,food_in_tile,max_size,max_stomach_size,speed):
