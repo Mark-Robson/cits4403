@@ -2,8 +2,8 @@ from FoodSystem import *
 
 class WorldMap:
 	food_system = Foodsystem()
-	total_food = 0
-	mapsize = 0 
+	total_food = int(0)
+	mapsize = int(0)
 
 
 	def __init__(self , FoodSystem , size):
@@ -34,5 +34,3 @@ class WorldMap:
 
 	def getSize(self):
 		return self.mapsize
-		
-		

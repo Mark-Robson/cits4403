@@ -46,6 +46,9 @@ class Species:
 		self.child_rules = child_rules
 		self.death_rules = death_rules
 
+	def getfoodsize(self,i):
+		return (self.members[i].size , self.members[i].stomach)
+
 	def totalMass(self):
 		total = 0
 		for i in self.members:
@@ -83,7 +86,7 @@ class Species:
 		self.population = self.population - len(alist)
 		total = []
 		for i in reversed(alist):
-			print("deleted a number"+str(i))
+			# print("deleted a number"+str(i))
 			if(i>=0):
 				total = total+(self.death_rules.hunger(self.members[i]))
 				#this may not work right
@@ -94,9 +97,12 @@ class Species:
 		self.births_laststep = len(alist)
 		self.population = self.population + len(alist)
 		for i in alist:
-			self.members.append(Creature(i[0],i[1],self.kid_size,self.max_stomach_size))
+			self.members.append(Creature(i[0],i[1],self.kid_size,self.kid_stomach_size))
 
 #returns a list of x, y or kids if can not have a kid it is of size 0
 	def havekid(self,i):
-		return self.child_rules.havekid(self.members[i],self.max_size,self.min_size,self.kid_size,self.kid_stomach_size,self.speed*2)
+		return self.child_rules.havekid(self.members[i],self.max_size,self.min_size,self.kid_size,self.kid_stomach_size,0)
 		
+	def printmembers(self):
+		for i in self.members:
+			print(i.toString())

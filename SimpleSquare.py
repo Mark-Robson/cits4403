@@ -12,11 +12,12 @@ class SimpleSquare(WorldMap):
 		self.foodmap = numpy.zeros((mapsize,mapsize))
 		super().__init__(FoodSystem , mapsize)
 
-	def addfood(self, amount):
-		add = self.FoodSystem.addfood(amount)
-		print(add)
+	def addFood(self, amount):
+		add = []
+		add = add + self.food_system.addFood(amount)
+		# print("WHY !!!! "+add)
 		for a in add:
-			print(str(a[0])+"  "+str(a[1])+"  "+str(a[2])+"  ")
+			# print(str(a[0])+"  "+str(a[1])+"  "+str(a[2])+"  ")
 			self.foodmap[a[0]][a[1]] = self.foodmap[a[0]][a[1]] + a[2]
 		self.total_food = self.total_food + amount
 
@@ -26,12 +27,12 @@ class SimpleSquare(WorldMap):
 # This will try to remove amount food for tile at x, y returning the amount of 
 # food that was removed 
 	def removefood(self , x , y , amount):
-		# print(str(self.total_food)) 
+		# sprint(str(self.total_food)) 
 		if(amount>self.foodmap[x][y]):
-			amount = self.foodmap[x][y]
+			k = self.foodmap[x][y]
 			foodmap[x][y] = 0
-			self.total_food = self.total_food - amount
-			return amount
+			self.total_food = self.total_food - k
+			return k
 		self.foodmap[x][y] = self.foodmap[x][y] - amount
 		self.total_food = self.total_food - amount
 		return amount
@@ -40,7 +41,6 @@ class SimpleSquare(WorldMap):
 	def print_map(self):
 		for i in range(self.mapsize):
 			for j in range(self.mapsize):
-				
 				sys.stdout.write(('%5s ' % (str(self.foodmap[i][j])) ))
 			sys.stdout.write('\n')
 		sys.stdout.flush()		
