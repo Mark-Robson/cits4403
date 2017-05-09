@@ -107,9 +107,9 @@ class SpeciesFactory:
 		child_rule = SingleChild()
 		# (self,movement_system,eating_rules,child_rules,death_rules,species_id,can_eat_list,
 		#  
-		max_size = 50
+		max_size = 6
 		min_size = 1
-		max_stomach_size = 3000
+		max_stomach_size = 5
 		grow_rate = 10
 		kid_size = 2
 		kid_stomach_size = 1

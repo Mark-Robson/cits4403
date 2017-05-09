@@ -13,11 +13,11 @@ from time import gmtime, strftime
 
 alist = []
 alist.append(0)
-world_size = 250
+world_size = 25
 starting_food = world_size*world_size*15
 simelength = 50
 
-dermps = SpeciesFactory.verysmallHerbfast(1000,world_size,1,alist)
+dermps = SpeciesFactory.verysmallHerbfast(1,world_size,1,alist)
 
 file = open("testfile"+strftime("%Y_%m_%d_%H_%M_%S", gmtime())+".csv","w")
 
@@ -29,21 +29,17 @@ print ("the creature have  "+str(dermps.totalMass())+"food "+str(dermps.populati
 print ("the total food is  "+str(worldmap.getTotalFood()+dermps.totalMass())+" food\n")
 faim = worldmap.getTotalFood()+dermps.totalMass();
 o = 0 
-for x in range(20):
-	if(x == 0 or x == 3 or x == 7 or x == 11):
+for x in range(12):
+	print("faim is "+ str ( faim))
+	if(x == 0 ):
 		faim = faim
-	elif(x == 12):
+	elif( x== 1 ):
 		worldmap.addFood(faim)
 		faim = int(faim*2)
-	elif(x==15):
-		faim = int(faim/4)
-	elif( x%2 == 1 ):
-		worldmap.addFood(faim)
-		faim = int(faim*2)
-	elif( x%2 == 0):
+	elif( x== 2):
 		faim = int(faim/2)
 	else:
-		faim = 0
+		faim = faim
 	
 	for i in range(simelength):
 		cm = dermps.totalMass()
@@ -61,31 +57,30 @@ for x in range(20):
 			food_before = worldmap.getfood(x,y)
 			(left_tile, back_later) = dermps.eat(c,food_before)
 			worldmap.removefood(x,y,food_before-left_tile)
-			isdead , h = dermps.hunger(c)
+			isdead,alist,h = dermps.hunger(c)
 			 
 			back_later = back_later + dermps.grow(c)
 			back_later = back_later + h
-			if (wm+cm <= faim):
-				worldmap.addFood(int(back_later))
+			
 
-			if(isdead == 1):
+			if(isdead):
+				back_later = back_later + alist[0][2]
 				deadlist.append(c)
 			else:
 				kidlist = kidlist+dermps.havekid(c)
-		killfood = dermps.Hunger_kill_members(deadlist)
-		killmass = 0
 
-		for K in killfood:
-			killmass = killmass +K[2]
+			if (wm+cm <= faim):
+				worldmap.addFood(int(back_later))
+			else:
+				worldmap.addFood(int(back_later/2))
+
+		dermps.Hunger_kill_members(deadlist)
+		# out with the old
 		dermps.add_members(kidlist)
+		# in with the new
 		wm = worldmap.getTotalFood()
 		cm = dermps.totalMass()
-		
-		# print (str(wm+cm)+" adding "+str(back_later)+"aiming "+str(faim))
-		if (wm+cm <= faim):
-			worldmap.addFood(int(faim-wm-cm))
-		else:
-			worldmap.addFood(int(killmass/2))
+
 
 
 	print ("the world contains "+str(worldmap.getTotalFood())+"food")

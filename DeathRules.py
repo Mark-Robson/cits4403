@@ -10,6 +10,8 @@ class DeathRules:
 	def hunger(self,creature):
 		alist = []
 		alist.append((-1,-1,creature.getMass()))
+		creature.size =int(0)
+		creature.stomach =int(0)
 		return alist
 
 # simple list of id to kill returns the food to add to the system
@@ -19,5 +21,7 @@ class DeathRules:
 # TODO MAKE THIS MEAT NOT GRASS
 	def eaten(self,creature):
 		alist = []
-		alist.append((-1,-1,creature.stomach))
-		return (-2,-2,creature.size)
+		alist.append((-2,-2,creature.size+creature.stomach))
+		creature.size =int(0)
+		creature.stomach =int(0)
+		return alist

@@ -54,6 +54,8 @@ class Species:
 		for i in self.members:
 			total = total + i.getMass()
 		return total
+	def getlocation(self,i):
+		return self.members[i].x , self.members[i].y
 #returns (x,y) wasmove to
 	def move(self,i,data):
 		return self.movement_system.move(self.members[i],self.speed,data)
@@ -63,9 +65,16 @@ class Species:
 		return self.eating_rules.eat(self.members[i],food_in_tile,self.max_size,self.max_stomach_size,self.speed)
 
 #returns (1 if dead from hunger 0 if not , amount of food to add back to system )
+#  at a list of (x,y,amount)
+#  for x or y = -1 add randomly 
+# TODO MAKE THIS MEAT NOT GRASS
 	def hunger(self,i):
-		return self.eating_rules.hunger(self.members[i],self.min_size,self.speed)
-
+		(dead, food) = self.eating_rules.hunger(self.members[i],self.min_size,self.speed)
+		alist = []
+		if(dead == 1):
+			return (dead,alist,food)
+		else:
+			return (dead,self.death_rules.hunger(self.members[i]),food)
 # retunrs the amout of food to add back into the system
 	def grow(self, i):
 		return self.eating_rules.grow(self.members[i],self.grow_rate,self.max_size)
@@ -76,22 +85,20 @@ class Species:
 	def can_eat(self,species_id):
 		return species_id in self.can_eat_list
 
+	def get_eaten(self,i):
+		return self.death_rules.eaten(self.members[i])
+
 # simple list of id to kill returns the food to add to the system
-#  at a list of (x,y,amount)
-#  for x or y = -1 add randomly 
-# TODO MAKE THIS MEAT NOT GRASS
 	def Hunger_kill_members(self,alist):
 		alist.sort()
 		self.deaths_laststep = len(alist)
 		self.population = self.population - len(alist)
-		total = []
 		for i in reversed(alist):
 			# print("deleted a number"+str(i))
 			if(i>=0):
-				total = total+(self.death_rules.hunger(self.members[i]))
 				#this may not work right
 				del self.members[i]
-		return total
+		
 # list of (x,y) locations to make a new member
 	def add_members(self,alist):
 		self.births_laststep = len(alist)
@@ -106,3 +113,6 @@ class Species:
 	def printmembers(self):
 		for i in self.members:
 			print(i.toString())
+
+	def printmember(self,i):
+		print(self.members[i].toString())
