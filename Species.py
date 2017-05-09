@@ -70,11 +70,12 @@ class Species:
 # TODO MAKE THIS MEAT NOT GRASS
 	def hunger(self,i):
 		(dead, food) = self.eating_rules.hunger(self.members[i],self.min_size,self.speed)
-		alist = []
-		if(dead == 1):
-			return (dead,alist,food)
+		
+		if(dead == 0):
+			alist = []
+			return (0,alist,food)
 		else:
-			return (dead,self.death_rules.hunger(self.members[i]),food)
+			return (1,self.death_rules.hunger(self.members[i]),food)
 # retunrs the amout of food to add back into the system
 	def grow(self, i):
 		return self.eating_rules.grow(self.members[i],self.grow_rate,self.max_size)

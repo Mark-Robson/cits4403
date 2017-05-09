@@ -62,7 +62,7 @@ for masterloop in range(5):
 			worldmap.removefood(x,y,food_before-left_tile)
 			dermps.printmember(c)
 
-			(isdead,alist,h) = dermps.hunger(c)
+			isdead,alist,h = dermps.hunger(c)
 
 			print("i lost food "+str(h))
 
