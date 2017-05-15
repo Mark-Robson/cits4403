@@ -1,13 +1,10 @@
 
 class Creature:
-	x =int(0)
-	y =int(0)
-	size =int(0)
-
-	def __init__(self,x,y,kid_size):
-		self.x = x
-		self.y = y
-		self.size = kid_size
+	
+	def __init__(self,in_x,in_y,in_kid_size):
+		self.x = in_x
+		self.y = in_y
+		self.size = in_kid_size
 
 	def getMass(self):
 		return int(self.size + self.stomach)

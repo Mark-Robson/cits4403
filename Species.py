@@ -5,29 +5,36 @@ import random
 
 
 class Species:
-    species_id = 0
 
-    population = 0
-    population_mass = 0
-    min_size = 0
-    kid_size = 0
+    specieslist = []
+    speciesidlist = []
 
-    members = []
-    can_eat_list = []
+    def __init__(self, in_map, in_species_id, in_can_eat_list, in_min_size, in_kid_size):
+        self.specieslist.append(self)
+        self.speciesidlist.append(in_species_id)
+        self.worldmap = in_map
+        self.species_id = in_species_id
+        self.can_eat_list = set(in_can_eat_list)
+        self.min_size = in_min_size
+        self.kid_size = in_kid_size
+        self.world_size = self.worldmap.mapsize
+        self.population_mass = 0
+        self.members = []
+    
+    def getkid_size(self):
+        return self.kid_size
 
-    world_size = int(0)
-    map = WorldMap(1)
-
-    def __init__(self, map, species_id, can_eat_list, min_size, kid_size):
-        self.map = map
-        self.species_id = species_id
-        self.can_eat_list = set(can_eat_list)
-        self.min_size = min_size
-        self.kid_size = kid_size
-        self.world_size = map.mapsize
+    def getPopulation(self):
+        return len(self.members)
 
     def getPopulationMass(self):
         return self.population_mass
+
+    def slowPopulationMass(self):
+        count = 0
+        for i in self.members:
+            count+= i.size
+        return count 
 
     def getlocation(self, i):
         return self.members[i].x, self.members[i].y
@@ -36,7 +43,7 @@ class Species:
         # Creatures that will be killed at end of sim
         alist = []
         # For every creature
-        for i in range(self.population):
+        for i in range(len(self.members)):
             # Move a creature
             # If it lands on food it'll eat. Yum Yum. Eating is part of moving.
             self.move(i, 10)
@@ -80,9 +87,9 @@ class Species:
 
     def eatgrass(self, i):
         # find out food on tile
-        amount = self.map.getfood(self.members[i].x, self.members[i].y)
+        amount = self.worldmap.getfood(self.members[i].x, self.members[i].y)
         # This removes the food fromthe map
-        self.map.removefood(self.members[i].x, self.members[i].y, amount)
+        self.worldmap.removefood(self.members[i].x, self.members[i].y, amount)
         # This increments the size the specimen
         self.members[i].size += amount
         # We keep count of total mass in each species type
@@ -99,7 +106,6 @@ class Species:
         if(self.members[i].size < self.min_size):
             self.population_mass -= self.members[i].size
             self.members[i].size = 0
-            self.population -= 1
             return 1
         else:
             return 0
@@ -120,7 +126,6 @@ class Species:
     # Alist is a list of tuples x loc, y loc and size.
     def add_members(self, alist):
         for i in alist:
-            self.population += 1
             self.members.append(Creature(i[0], i[1], i[2]))
             self.population_mass += self.kid_size
 
@@ -130,9 +135,9 @@ class Species:
         alist = []
         for i in self.members:
             if i.size >= self.kid_size*2:
-                alist.append((i.x, i.y, self.kid_size))
-                i.size -= self.kid_size
-                self.population_mass -= self.kid_size
+                alist.append((i.x,i.y,int(i.size/2)))
+                self.population_mass -= int(i.size/2)
+                i.size -= int(i.size/2)
         return alist
 
     # Don't use this one but it prints all things. Not grass.

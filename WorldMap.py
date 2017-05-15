@@ -6,9 +6,6 @@ class WorldMap:
     # This is a superclass for simplesquare. Check with mark if you need to know
     # anything, but it shouldn't be necessary
 
-    total_food = int(0)
-    mapsize = int(0)
-
     def __init__(self, size):
         self.total_food = 0
         self.mapsize = size
@@ -33,8 +30,7 @@ class WorldMap:
 
 
 class SimpleSquare(WorldMap):
-    foodmap = numpy.zeros((1, 1))
-
+    
     # Inits based on the size of the map. N*N sized square.
     def __init__(self, mapsize):
         if(mapsize < 1):
