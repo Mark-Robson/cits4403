@@ -40,25 +40,48 @@ class Species:
         return self.members[i].x, self.members[i].y
 
     def stepSpecies(self):
+       
+        praymap = []
+        for x in range(self.world_size):
+            praymap.append([])
+            for y in range(self.world_size):
+                praymap[x].append([])
+
+        prayKilledList = []
+        for s in range(len(self.speciesidlist)):
+            prayKilledList.append([])
+            if self.speciesidlist[s] in self.can_eat_list:
+
+                for specimen in range(len(self.specieslist[s].members)):
+                    c = self.specieslist[s].members[specimen]
+                    praymap[c.x][c.y].append((s,specimen,c.size))
+
+
         # Creatures that will be killed at end of sim
-        alist = []
-        # For every creature
+        alist = [] 
+        # For every creature      
         for i in range(len(self.members)):
             # Move a creature
             # If it lands on food it'll eat. Yum Yum. Eating is part of moving.
-            self.move(i, 10)
+            self.move(i, 10 , praymap,prayKilledList)
             # This is dying due to hunger
             if(self.hunger(i, 1)):
                 alist.append(i)
         # Clean steps. Remove all creatures
         self.Remove_killed_members(alist)
+        
+        for prayType in range(len(self.speciesidlist)):
+            # print("befor "+str(self.specieslist[prayType].getPopulationMass())+"removing "+str(len(prayKilledList[prayType])))
+            self.specieslist[prayType].Remove_consumed_members(prayKilledList[prayType])
+            # print("After "+str(self.specieslist[prayType].getPopulationMass()))
+            # print("Realy "+str(self.specieslist[prayType].slowPopulationMass()))
         # New pop creation
         newPop = []
         # Checks for children
         newPop = self.havekid()
         self.add_members(newPop)
 
-    def move(self, i, speed):
+    def move(self, i, speed , praymap ,prayKilledList):
         # Calculate max and min x for movement
         minx = self.members[i].x-speed
         maxx = self.members[i].x+speed
@@ -84,6 +107,17 @@ class Species:
             self.eatgrass(i)
 
         # TODO: Eat other things
+        amount = 0
+        for p in praymap[self.members[i].x][self.members[i].y]:
+            prayKilledList[p[0]].append(p[1])
+            amount+= p[2]
+        praymap[self.members[i].x][self.members[i].y] = []
+
+        # This increments the size the specimen
+        self.members[i].size += amount
+        # We keep count of total mass in each species type
+        self.population_mass += amount
+
 
     def eatgrass(self, i):
         # find out food on tile
@@ -121,6 +155,13 @@ class Species:
         for i in reversed(alist):
             del self.members[i]
 
+    def Remove_consumed_members(self, alist):
+        alist.sort()
+        for i in reversed(alist):
+            self.population_mass-= self.members[i].size
+            self.members[i].size = 0
+            del self.members[i]
+
     # List of (x,y,size) locations to make a new member
     # This is called in births and in startup
     # Alist is a list of tuples x loc, y loc and size.
@@ -134,10 +175,11 @@ class Species:
     def havekid(self):
         alist = []
         for i in self.members:
-            if i.size >= self.kid_size*2:
-                alist.append((i.x,i.y,int(i.size/2)))
-                self.population_mass -= int(i.size/2)
-                i.size -= int(i.size/2)
+            if(( i.size) >= (self.kid_size*2)):
+                kidsize = self.kid_size
+                alist.append((i.x,i.y,kidsize))
+                self.population_mass -= kidsize
+                i.size -= kidsize
         return alist
 
     # Don't use this one but it prints all things. Not grass.
