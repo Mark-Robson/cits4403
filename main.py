@@ -1,44 +1,91 @@
-from creature import *
-from herbivore import *
-from world import *
-from randomworld import *
-from simulation import *
-import numpy
+from Species import *
+from WorldMap import *
 import random
+from time import gmtime, strftime
+
+world_size = 300
+StartingPrayPop = 100
+StartingPredPop = 100
+length = 10000
+fileout = 10
+
+starting_food = world_size*world_size*5
+alist = []
+alist.append(0)
+
+worldmap = SimpleSquare(world_size)
+worldmap.addFood(starting_food)
+#              map,species_id,can_eat_list,min_size,kid_size
+pray = Species(worldmap,1,alist,10,30)
+startingPop = []
+for i in range(StartingPrayPop):
+    x = random.randint(0,world_size-1)
+    y = random.randint(0,world_size-1)
+    startingPop.append( (x,y,pray.kid_size) )
+pray.add_members(startingPop)
 
 
-simulations = simulation.newrandomworld(100,100,100000)
-# simulations.printsim()
-file = open("testfile.csv","w") 
-totalfoodstart = simulations.creaturefood()+simulations.simworld.totalfood
+alist = []
+alist.append(0)
 
-print ("the world contains "+str(simulations.simworld.totalfood)+"food")
-print ("the creature have  "+str(simulations.creaturefood())+"food")
-print ("the total food is  "+str(simulations.creaturefood()+simulations.simworld.totalfood)+"food")
-for i in range(1000):
-	# simulations.printsim()
-	print(i)
-	file.write(simulations.stepsim()+"\n")
-	# print(len(simulations.creatures))
+pred = Species(worldmap,0,alist,10,20)
+newstartingPop = []
+for i in range(StartingPredPop):
+    x = random.randint(0,world_size-1)
+    y = random.randint(0,world_size-1)
+    newstartingPop.append( (x,y,pred.kid_size) )
+pred.add_members(newstartingPop)
 
-simulations.simworld.addamountfood(int(10),100000)
-simulations.maxfood = simulations.maxfood +100000
-for i in range(1000):
-	# simulations.printsim()
-	print(i)
-	file.write(simulations.stepsim()+"\n")
-	# print(len(simulations.creatures))
-simulations.maxfood = simulations.maxfood -150000
-for i in range(1000):
-	# simulations.printsim()
-	print(i)
-	file.write(simulations.stepsim()+"\n")
-	# print(len(simulations.creatures))
+time = 0
+prayMass = pray.getPopulationMass()
+perdMass = pred.getPopulationMass()
+prayPopulation = pray.population
+predPopulation = pred.population
+worldmass = worldmap.getTotalFood()
+totalmass = worldmass+prayMass+perdMass
+
+massAim = totalmass
+
+file = open("testfile"+strftime("%Y_%m_%d_%H_%M_%S", gmtime())+".csv","w")
+
+print (str(time)+"\nthe world contains "+str(worldmass)+"food\nthe pray     have  "+str(prayMass)+"food"+str(prayPopulation)+"\nthe pred     have  "+str(perdMass)+"food"+str(predPopulation)+"\nthe total food is  "+str(totalmass)+"food\n")
 
 
+file.write(str(time)+","+str(prayPopulation)+","+str(predPopulation)+","+str(time)+","+str(prayMass)+","+str(perdMass)+","+str(worldmass)+","+str(totalmass)+"\n")
 
-file.close() 
-print ("the world contains "+str(simulations.simworld.totalfood)+"food")
-print ("the creature have  "+str(simulations.creaturefood())+"food")
-print ("the total food is  "+str(simulations.creaturefood()+simulations.simworld.totalfood)+"food")
-# simulations.printsim()
+for i in range(length):
+
+    pray.stepSpecies()
+
+    prayMass = pray.getPopulationMass()
+    perdMass = pred.getPopulationMass()
+    prayPopulation = pray.population
+    predPopulation = pred.population
+    worldmass = worldmap.getTotalFood()
+    totalmass = worldmass+prayMass+perdMass
+
+    if(totalmass < massAim):
+        worldmap.addFood(int(massAim-totalmass))
+        worldmass = worldmap.getTotalFood()
+        totalmass = worldmass+prayMass+perdMass
+
+
+    pred.stepSpecies()
+
+    prayMass = pray.getPopulationMass()
+    perdMass = pred.getPopulationMass()
+    prayPopulation = pray.population
+    predPopulation = pred.population
+    worldmass = worldmap.getTotalFood()
+    totalmass = worldmass+prayMass+perdMass
+
+    if(totalmass < massAim):
+        worldmap.addFood(int(massAim-totalmass))
+        worldmass = worldmap.getTotalFood()
+        totalmass = worldmass+prayMass+perdMass
+
+    time += 1
+    if(time%fileout==0):
+        file.write(str(time)+","+str(prayPopulation)+","+str(predPopulation)+","+str(time)+","+str(prayMass)+","+str(perdMass)+","+str(worldmass)+","+str(totalmass)+"\n")
+
+    print (str(time)+"\nthe world contains "+str(worldmass)+"food\nthe pray     have  "+str(prayMass)+"food"+str(prayPopulation)+"\nthe pred     have  "+str(perdMass)+"food"+str(predPopulation)+"\nthe total food is  "+str(totalmass)+"food\n")
