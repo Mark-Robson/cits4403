@@ -1,5 +1,5 @@
 # from sets import *
-from Creature import *
+from creature import *
 from WorldMap import *
 import random
 
