@@ -76,8 +76,8 @@ pred.add_members(newstartingPop)
 time = 0
 prayMass = pray.getPopulationMass()
 perdMass = pred.getPopulationMass()
-prayPopulation = pray.getPopulation()
-predPopulation = pred.getPopulation()
+prayPopulation = pray.population
+predPopulation = pred.population
 worldmass = worldmap.getTotalFood()
 totalmass = worldmass+prayMass+perdMass
 
@@ -85,8 +85,8 @@ massAim = totalmass
 
 file = open("testfile"+strftime("%Y_%m_%d_%H_%M_%S", gmtime())+".csv", "w")
 
-print (str(time)+"\nthe world contains "+str(worldmass)+"food\nthe pray     have  "+str(prayMass)+" food "+str(prayPopulation)+"\nthe pred     have  "+str(perdMass)+" food "+str(predPopulation)+"\nthe total food is  "+str(totalmass)+"food\n")
-# print (str(pray.slowPopulationMass())+" "+str(len(pray.members)))
+print(str(time)+"\nthe world contains "+str(worldmass)+"food\nthe pray     have  "+str(prayMass)+"food"+str(prayPopulation)+"\nthe pred     have  "+str(perdMass)+"food"+str(predPopulation)+"\nthe total food is  "+str(totalmass)+"food\n")
+
 
 file.write(str(time)+","+str(prayPopulation)+","+str(predPopulation)+","+str(time)+","+str(prayMass)+","+str(perdMass)+","+str(worldmass)+","+str(totalmass)+"\n")
 
@@ -96,8 +96,8 @@ for i in range(length):
 
     prayMass = pray.getPopulationMass()
     perdMass = pred.getPopulationMass()
-    prayPopulation = pray.getPopulation()
-    predPopulation = pred.getPopulation()
+    prayPopulation = pray.population
+    predPopulation = pred.population
     worldmass = worldmap.getTotalFood()
     totalmass = worldmass+prayMass+perdMass
 
@@ -111,8 +111,8 @@ for i in range(length):
 
     prayMass = pray.getPopulationMass()
     perdMass = pred.getPopulationMass()
-    prayPopulation = pray.getPopulation()
-    predPopulation = pred.getPopulation()
+    prayPopulation = pray.population
+    predPopulation = pred.population
     worldmass = worldmap.getTotalFood()
     totalmass = worldmass+prayMass+perdMass
 
@@ -125,5 +125,4 @@ for i in range(length):
     if(time % fileout == 0):
         file.write(str(time)+","+str(prayPopulation)+","+str(predPopulation)+","+str(time)+","+str(prayMass)+","+str(perdMass)+","+str(worldmass)+","+str(totalmass)+"\n")
 
-    print (str(time)+"\nthe world contains "+str(worldmass)+"food\nthe pray     have  "+str(prayMass)+" food "+str(prayPopulation)+"\nthe pred     have  "+str(perdMass)+" food "+str(predPopulation)+"\nthe total food is  "+str(totalmass)+"food\n")
-   # print (str(pray.slowPopulationMass())+" "+str(len(pray.members)))
+    print (str(time)+"\nthe world contains "+str(worldmass)+"food\nthe pray     have  "+str(prayMass)+"food"+str(prayPopulation)+"\nthe pred     have  "+str(perdMass)+"food"+str(predPopulation)+"\nthe total food is  "+str(totalmass)+"food\n")
