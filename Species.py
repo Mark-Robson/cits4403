@@ -21,7 +21,7 @@ class Species:
         self.membersx = []
         self.membersy = []
         self.members_size = []
-    
+
     def getkid_size(self):
         return self.kid_size
 
@@ -35,13 +35,13 @@ class Species:
         count = 0
         for i in self.members_size:
             count+= i
-        return count 
+        return count
 
     def getlocation(self, i):
         return self.membersx[i], self.membersy[i]
 
     def stepSpecies(self):
-       
+
         praymap = []
         for x in range(self.world_size):
             praymap.append([])
@@ -61,18 +61,18 @@ class Species:
 
 
         # Creatures that will be killed at end of sim
-        alist = [] 
-        # For every creature      
+        alist = []
+        # For every creature
         for i in range(len(self.membersx)):
             # Move a creature
             # If it lands on food it'll eat. Yum Yum. Eating is part of moving.
-            self.move(i, 10 , praymap,prayKilledList)
+            self.move(i, 1, praymap, prayKilledList)
             # This is dying due to hunger
             if(self.hunger(i, 1)):
                 alist.append(i)
         # Clean steps. Remove all creatures
         self.Remove_killed_members(alist)
-        
+
         for prayType in range(len(self.speciesidlist)):
             self.specieslist[prayType].Remove_consumed_members(prayKilledList[prayType])
         # New pop creation
@@ -187,5 +187,3 @@ class Species:
                 self.population_mass -= kidsize
                 self.members_size[i] -= kidsize
         return alist
-
-
