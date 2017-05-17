@@ -20,7 +20,7 @@ class Species:
         self.world_size = self.worldmap.mapsize
         self.population_mass = 0
         self.members = []
-    
+
     def getkid_size(self):
         return self.kid_size
 
@@ -34,7 +34,7 @@ class Species:
         count = 0
         for i in self.members:
             count+= i.size
-        return count 
+        return count
 
     def getlocation(self, i):
         return self.members[i].x, self.members[i].y
