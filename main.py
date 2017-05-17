@@ -9,72 +9,71 @@ import numpy as np
 
 
 parser = argparse.ArgumentParser(description='Creates the world sim in a\
-                                 prededator prey model.')
+prededator prey model.')
 parser.add_argument('--startingpraypop', '-pray',
                     type=int,
                     help='Integer representing initial number of pray species.',
-                    default=1)
-parser.add_argument('--startingpredpop', '-pred',
+                    default=100)
+parser.add_argument('--startingpredpop', '-pred',      
                     type=int,
                     help='Integer representing initial number of predator\
                     species',
-                    default=0)
+                    default=100)      
 parser.add_argument('--length', '-L',
                     type=int,
                     help='Integer value representing the number\
                     of time steps in the simulation',
-                    default=50)
+                    default=1000)      
 parser.add_argument('--world_size', '-S',
-                    type=int,
+                    type=int,  
                     help='Integer value representing N, the length of one side \
                     of the world. Total world size = N*N',
-                    default=50)
+                    default=200)      
 parser.add_argument('--fileout', '-F',
                     type=int,
                     help='Integer value representing the number of instant \
                     between each file print statement',
-                    default=1)
+                    default=1)       
 parser.add_argument('--avefoodpertile', '-food',
                     type=int,
                     help='Integer value represnting the average amount of per \
                     tile',
-                    default=10)
-
-args = parser.parse_args()
-
-world_size = args.world_size
-StartingPrayPop = args.startingpraypop
-StartingPredPop = args.startingpredpop
-length = args.length
-fileout = args.fileout
-avefood = args.avefoodpertile
-
-print(args)
+                    default=5)           
+args = parser.parse_args()        
+world_size = args.world_size      
+StartingPrayPop = args.startingpraypop        
+StartingPredPop = args.startingpredpop        
+length = args.length      
+fileout = args.fileout        
+avefood = args.avefoodpertile     
+     
+print(args)       
 starting_food = world_size * world_size * avefood
+
 alist = []
 alist.append(0)
 
 worldmap = SimpleSquare(world_size)
 worldmap.addFood(starting_food)
 #              map,species_id,can_eat_list,min_size,kid_size
-pray = Species(worldmap, 1, alist, 10, 30)
+pray = Species(worldmap, 1, alist, 10, 20)
 startingPop = []
 for i in range(StartingPrayPop):
     x = random.randint(0, world_size-1)
     y = random.randint(0, world_size-1)
-    startingPop.append((x, y, pray.kid_size))
+    startingPop.append( (x, y, pray.getkid_size()) )
 pray.add_members(startingPop)
 
 
 alist = []
-alist.append(0)
+alist.append(1)
 
-pred = Species(worldmap, 0, alist, 10, 20)
+pred = Species(worldmap, 2, alist, 10, 20)
 newstartingPop = []
 for i in range(StartingPredPop):
     x = random.randint(0, world_size-1)
     y = random.randint(0, world_size-1)
-    newstartingPop.append((x, y, pred.kid_size))
+    newstartingPop.append( (x, y, pred.getkid_size()) )
 pred.add_members(newstartingPop)
 
 time = 0
@@ -134,19 +133,20 @@ for i in range(length):
         worldmass = worldmap.getTotalFood()
         totalmass = worldmass+prayMass+perdMass
 
-    pred.stepSpecies()
+    if(time>50):
+        pred.stepSpecies()
 
-    prayMass = pray.getPopulationMass()
-    perdMass = pred.getPopulationMass()
-    prayPopulation = pray.getPopulation()
-    predPopulation = pred.getPopulation()
-    worldmass = worldmap.getTotalFood()
-    totalmass = worldmass+prayMass+perdMass
-
-    if(totalmass < massAim):
-        worldmap.addFood(int(massAim-totalmass))
+        prayMass = pray.getPopulationMass()
+        perdMass = pred.getPopulationMass()
+        prayPopulation = pray.getPopulation()
+        predPopulation = pred.getPopulation()
         worldmass = worldmap.getTotalFood()
         totalmass = worldmass+prayMass+perdMass
+
+        if(totalmass < massAim):
+            worldmap.addFood(int(massAim-totalmass))
+            worldmass = worldmap.getTotalFood()
+            totalmass = worldmass+prayMass+perdMass
 
     time += 1
     if(time % fileout == 0):
